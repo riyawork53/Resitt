@@ -1,32 +1,35 @@
-# Recall Garden
+# Resitt
 
-A native SwiftUI flashcard foundation for iPhone and iPad (iOS 17+). A warm paper palette, botanical emblems, and a calm “tend your memories” voice give it its own direction. All visuals use SwiftUI shapes and Apple SF Symbols; there are no bundled third-party assets or dependencies.
+A SwiftUI study app for iPhone and iPad, iOS 17+. White surfaces, soft red accents and study-focused decks. No external dependencies, accounts, analytics or network calls.
 
-## Run
+## Open on a Mac
 
-Open `RecallGarden.xcodeproj` in Xcode 15 or newer on a Mac. Select the RecallGarden target and an iPhone simulator, then Run. For a physical device, select your signing team and replace `com.example.RecallGarden` with your own bundle identifier.
+Open `RecallGarden.xcodeproj` in Xcode 15 or newer. The project filename and bundle identifier are retained for compatibility; the installed app and interface display **Resitt**. Select an iPhone simulator and press Command-R. For a physical iPhone, select your signing team. Camera capture requires a real device; the simulator can use the photo picker.
 
-Each cloud task already has an isolated checkout; use the existing repository rather than creating a worktree. This Linux cloud machine has no Swift compiler, Apple SDK, or Xcode, so compilation and simulator behavior have not been verified here.
+## Features
 
-## Included
+- Create and delete decks, and create, edit and delete cards.
+- Attach a camera photo or library image to a card; enter a question/topic and answer/correction notes. Photos appear on the question side during study. Remove or replace photos in the editor. Images are normalized and resized to at most 1,800 pixels on their longest side, then saved as JPEG locally with the cards.
+- Review due cards with answer reveals and Again / Got it / Easy scheduling. Again is due after a minute; Got it starts at one day and doubles; Easy starts at three days and triples. Intervals cap at 365 days. Cards appear once per session.
+- Fresh libraries start empty. Earlier versions included a “Small wonders” example deck: existing data is deliberately preserved. Delete that deck through its menu if unwanted. Missing photo fields in older saves decode as nil.
+- Resitt Premium has a clearly labeled coming-soon screen for future cosmetic card designs. **No designs, prices, transactions or premium entitlements are implemented.** Core study and photo features are free.
 
-- Create decks with botanical and celestial emblems; delete decks with confirmation.
-- Create, edit, and delete question-and-answer cards.
-- Reveal answers and rate recall: Again returns in one minute; Got it schedules 1 day initially and doubles the interval; Easy schedules 3 days initially and triples it. Intervals cap at 365 days. This is a simple scheduling heuristic, not a validated learning algorithm.
-- Study a snapshot of due cards once per session. Cards rated Again appear in a later session after their due time.
-- Local, atomic JSON storage under Application Support. No accounts, analytics, advertising, or network calls. Corrupt files are preserved and editing is blocked rather than overwriting them.
-- A small, removable starter deck.
+Storage is an atomic JSON file under the original Application Support location to preserve upgrades. There is no cloud sync or export yet; deleting the app can delete study data. Photos are embedded in that file, so a large collection will eventually need a separate image store. Camera access has a purpose string and denial/unavailable handling. The system photo picker does not require full photo-library access.
 
-## Validate on a Mac
+## Validation
+
+This Linux environment has no Swift compiler, Xcode or Apple SDK. Source and project consistency checks are possible here, but an iOS compilation, simulator run and camera validation remain pending. On a Mac:
 
 ```sh
 xcodebuild -project RecallGarden.xcodeproj -scheme RecallGarden -sdk iphonesimulator -configuration Debug CODE_SIGNING_ALLOWED=NO build
 ```
 
-In the simulator: create a deck and two cards, edit one, study and reveal both answers, rate one Again and one Got it, and confirm only Again becomes due after a minute. Force-quit and reopen to verify persistence. Delete a card, cancel deck deletion, then confirm deletion. Check large accessibility text, VoiceOver, landscape, and iPad layouts. These checks are pending; no passing iOS build is claimed.
+Check a fresh install has no cards. Create a deck and a card with question and notes, choose a library image, save, reopen and edit it, and restart the app to check persistence. Study it and confirm the image precedes the revealed correction. Remove/replace its photo. Verify camera capture, cancellation, denied permission and permission recovery on a real iPhone; check simulator fallback. Verify existing text-only cards still load on upgrade. Check deletion confirmation, scheduling, large text, VoiceOver, landscape and iPad. Open Premium and verify it explicitly offers no purchase.
 
-## Before an App Store submission
+## Before release
 
-This is a starting point, not a submission-ready app. Add an original app icon and launch branding, choose and clear your final name, set signing and bundle ID, and validate on real devices. Prepare screenshots, support and privacy-policy URLs, accurate App Privacy disclosures, age rating, accessibility review, and any required privacy manifest declarations. Consider export/import and recovery of saved decks before public release. There is no paid content or purchase flow yet.
+Add an original app icon, clear the final name/branding, set your own signing configuration and bundle identifier for release, and test on devices. Prepare screenshots, support and privacy-policy URLs, accurate App Privacy disclosures and any required privacy declarations.
 
-The interface and source were created for this project, but originality does not guarantee exclusive rights or that a similar name or concept does not already exist. Search App Store listings and trademark registers in your markets before investing in the brand. Copyright protects qualifying original expression; it does not prevent others from making flashcard apps. Do not publish under a claim of guaranteed exclusivity.
+When designs are ready, configure real App Store Connect products and integrate StoreKit purchases, verified entitlements, restore purchases, pending/cancel/error handling and required purchase disclosures. Do not enable payment before the purchased content can be delivered. Premium pricing and whether it is a one-time purchase or subscription remain undecided.
+
+Each cloud task is already isolated: use the existing checkout rather than creating a worktree. Original source/design does not guarantee exclusive rights to a name or the general flashcard concept; check branding conflicts before release.

@@ -5,6 +5,7 @@ struct Flashcard: Identifiable, Codable {
     var id = UUID()
     var prompt: String
     var answer: String
+    var photoData: Data?
     var due = Date.distantPast
     var interval = 0
     var reviews = 0
@@ -13,7 +14,7 @@ struct Flashcard: Identifiable, Codable {
 struct Deck: Identifiable, Codable {
     var id = UUID()
     var name: String
-    var symbol: String = "leaf.fill"
+    var symbol: String = "rectangle.stack.fill"
     var cards: [Flashcard] = []
     var dueCards: [Flashcard] { cards.filter { $0.due <= Date() } }
 }
@@ -26,16 +27,13 @@ final class Library: ObservableObject {
 
     init() {
         let directory = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
+        // Keep the original location so updates preserve existing study data.
         url = directory.appendingPathComponent("RecallGarden/library.json")
         do {
             if FileManager.default.fileExists(atPath: url.path) {
                 decks = try JSONDecoder().decode([Deck].self, from: Data(contentsOf: url))
             } else {
-                decks = [Deck(name: "Small wonders", symbol: "sparkles", cards: [
-                    Flashcard(prompt: "Why does the sky look blue?", answer: "Air molecules scatter shorter blue wavelengths of sunlight more strongly than longer red wavelengths."),
-                    Flashcard(prompt: "What makes a memory stronger?", answer: "Retrieving it over spaced intervals. A little effort remembering is part of the learning."),
-                    Flashcard(prompt: "What is a mycorrhizal network?", answer: "A network of fungal filaments that connects with plant roots and helps exchange nutrients.")
-                ])]
+                decks = []
                 save()
             }
         } catch {
@@ -107,8 +105,8 @@ enum Rating: String, CaseIterable {
     var hint: String {
         switch self {
         case .again: return "1 minute"
-        case .good: return "Grow slowly"
-        case .easy: return "Stretch further"
+        case .good: return "Standard interval"
+        case .easy: return "Longer interval"
         }
     }
 }

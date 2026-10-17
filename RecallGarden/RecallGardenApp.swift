@@ -6,7 +6,7 @@ struct RecallGardenApp: App {
 
     var body: some Scene {
         WindowGroup {
-            HomeView().environmentObject(library).tint(Theme.ink)
+            HomeView().environmentObject(library).tint(Theme.accent)
         }
     }
 }

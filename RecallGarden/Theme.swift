@@ -1,13 +1,14 @@
 import SwiftUI
 
 enum Theme {
-    static let paper = Color(red: 0.96, green: 0.95, blue: 0.90)
-    static let ink = Color(red: 0.16, green: 0.25, blue: 0.22)
-    static let moss = Color(red: 0.77, green: 0.84, blue: 0.65)
-    static let peach = Color(red: 0.96, green: 0.77, blue: 0.63)
+    static let paper = Color.white
+    static let ink = Color(red: 0.15, green: 0.16, blue: 0.19)
+    static let accent = Color(red: 0.72, green: 0.20, blue: 0.26)
+    static let blush = Color(red: 1.0, green: 0.92, blue: 0.93)
+    static let surface = Color(red: 0.97, green: 0.97, blue: 0.98)
 }
 
-struct GardenBackground: ViewModifier {
+struct ResittBackground: ViewModifier {
     func body(content: Content) -> some View {
         content.foregroundStyle(Theme.ink)
             .background(Theme.paper.ignoresSafeArea())
@@ -16,5 +17,5 @@ struct GardenBackground: ViewModifier {
 }
 
 extension View {
-    func gardenStyle() -> some View { modifier(GardenBackground()) }
+    func resittStyle() -> some View { modifier(ResittBackground()) }
 }
